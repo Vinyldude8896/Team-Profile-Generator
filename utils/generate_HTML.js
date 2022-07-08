@@ -10,7 +10,7 @@ function generateHTMLPage (data) {
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css" />
-        <link rel="stylesheet" href="/dist/style.css" />
+        <link rel="stylesheet" href="style.css" />
     
         <!-- Header titlebar-->
         <title>Team Summary Page</title>
@@ -45,7 +45,8 @@ function generateHTMLPage (data) {
                       </li>
                       <li class="d-flex list-header">
                           email:
-                              <p class=""> ${data.email}</p> 
+                              <p class="">
+                              <a href="mailto:${data.email}">${data.email}</a></p> 
                           </li>
                           <li class="d-flex list-header">
                               Office Number:
