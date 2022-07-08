@@ -1,4 +1,4 @@
-const manager = require('../lib/Manager');
+
 
 function generateHTMLPage (data) {
     return `<!DOCTYPE html>
@@ -31,6 +31,7 @@ function generateHTMLPage (data) {
                 <div class="">
                   <h2 class="card-header">
                     ${data.name}
+                    </br>
                     <span class='iconify'>
                       <ion-icon name="shield-half-outline"></ion-icon>     
                   <p class ="sub-header">${data.role}</p>
@@ -63,6 +64,7 @@ function generateHTMLPage (data) {
     </html>
 `
 }
+
 
 
 module.exports = generateHTMLPage;

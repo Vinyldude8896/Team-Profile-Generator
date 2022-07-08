@@ -4,7 +4,30 @@ const generateHTMLPage = require('./utils/generate_HTML.js');
 const Manager = require('./lib/Manager.js');
 // const Manager = require('./lib/Manager');
 
-const getTeamInformation = () => {
+
+
+const getNewEmployee = () =>{
+    return inquirer.prompt([
+        {
+        type: 'text',
+        name: 'employeeType',
+        message: "What type of employee would you like to add?",
+        choice: ['Engineer','Intern', 'finish building team']
+        }
+        .then (inputUserData =>{
+            if (inputUserData === 'Engineer'){
+                getEngineerInformation();
+            } else if (inputUserData === 'Intern'){
+                getInternInformation();
+            } else if (inputUserData === "finish building team"){
+            return generateHTMLPage(inputUserData);
+            }
+        })
+    ])
+    } 
+
+
+const getTeamManagerInformation = () => {
 return inquirer.prompt([
         {
         type: 'text',
@@ -58,19 +81,6 @@ return inquirer.prompt([
                         }
                  }
          },
-        // {
-        // type: 'input',
-        // name: 'role',
-        // messaage: "Please enter their role:",
-        // validate:  inputUserData = () => {
-        //         if (inputUserData) {
-        //                 return true;
-        //         } else {
-        //             console.log("You need to enter a valid response.");
-        //                 return false;
-        //                 }
-        //             }
-        //         }
             ])
             .then(({name, id, email, officeNumber, role}) =>{
                 const inputManager = new Manager(name, id, email, officeNumber, role);
@@ -85,6 +95,17 @@ return inquirer.prompt([
                 console.log(inputUserData);
                 return generateHTMLPage(inputUserData);
             })
+            .then(getNewEmployee());
+
+            // .then (inputManager =>{
+            //     if ((.employeeType) === "Engineer"){
+            //         getEngineerInformation();
+            //     } else if ((inputUserData.employeeType) === "Intern"){
+            //         getInternInformation();
+            //     } else if ((inputUserData.employeeType) === "finish building team"){
+            //     return generateHTMLPage(inputUserData);
+            //     }
+            // })
     }
 
 
@@ -104,13 +125,13 @@ const writeToFile = fileContent => {
     });
 }
 
-getTeamInformation()
-
+getTeamManagerInformation()
     .then(pageContent =>{
-        return writeToFile(pageContent);
-    
+        return writeToFile(pageContent);    
     })
+    
 
+module.exports = getNewEmployee;
 
 
 // const Team = require('./lib/Team');
