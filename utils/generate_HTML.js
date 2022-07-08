@@ -1,3 +1,5 @@
+const manager = require('../lib/Manager');
+
 function generateHTMLPage (data) {
     return `<!DOCTYPE html>
     <html lang="en">
@@ -11,7 +13,7 @@ function generateHTMLPage (data) {
       </head>
       <body>
         <main>
-            <h1>${data.name}${data.employeeId} ${data.email} ${data.officeNumber} ${data.role}</h1>  
+            <h1>${data.name}${data.id} ${data.email} ${data.officeNumber} ${data.role}</h1>  
         </main>
         <script src="index.js"></script>
       </body>
