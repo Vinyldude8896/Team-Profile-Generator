@@ -1,33 +1,162 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 const generateHTMLPage = require('./utils/generate_HTML.js');
+const generateIntern = require('./utils/generate_HTML.js');
+const generateEngineer = require('./utils/generate_HTML.js');
 const Manager = require('./lib/Manager.js');
+const Employee = require('./lib/Employee.js');
 // const Manager = require('./lib/Manager');
 
 
-
-const getNewEmployee = () =>{
+function getNewEngineer() {
     return inquirer.prompt([
         {
-        type: 'text',
-        name: 'employeeType',
-        message: "What type of employee would you like to add?",
-        choice: ['Engineer','Intern', 'finish building team']
-        }
-        .then (inputUserData =>{
-            if (inputUserData === 'Engineer'){
-                getEngineerInformation();
-            } else if (inputUserData === 'Intern'){
-                getInternInformation();
-            } else if (inputUserData === "finish building team"){
-            return generateHTMLPage(inputUserData);
+            type: 'text',
+            name: 'name',
+            Message: "What is the employee's name?",
+            validate:  inputUserData = () => {
+                if (inputUserData) {
+                    return true;
+                } else {
+                console.log("You need to enter a valid response.");
+                    return false;
+                }
             }
-        })
+        },
+        {
+            type: 'text',
+            name: 'id',
+            Message: "What is the their employee ID number?",
+            validate:  inputUserData = () => {
+                if (inputUserData) {
+                    return true;
+                } else {
+                console.log("You need to enter a valid response.");
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'text',
+            name: 'email',
+            Message: "What is the their email?",
+            validate:  inputUserData = () => {
+                if (inputUserData) {
+                    return true;
+                } else {
+                console.log("You need to enter a valid response.");
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'text',
+            name: 'github',
+            Message: "What is their GitHub username?",
+            validate:  inputUserData = () => {
+                if (inputUserData) {
+                    return true;
+                } else {
+                console.log("You need to enter a valid response.");
+                    return false;
+                }
+            }
+        },
     ])
-    } 
+    .then(({name, id, email, github, role}) =>{
+            const inputEngineer = new Intern(name, id, email, github, role);
+            console.log("The New Intern's name is " + inputEngineer.getName());
+            console.log("The New Intern's employee ID is" + inputEngineer.getId());
+            console.log("The New Intern's email is " + inputEngineer.getEmail());
+            console.log("The New Intern's GitHub unsername is " + inputEngineer.getGithub());
+            console.log("The Manager's Role is " + inputEngineer.getRole());
+            return inputEngineer;
+        })
+        .then(inputUserData =>{
+            console.log(inputUserData);
+            return generateEngineer(inputUserData);
+        })
+}
 
 
-const getTeamManagerInformation = () => {
+function getNewIntern() {
+    return inquirer.prompt([
+        {
+            type: 'text',
+            name: 'name',
+            Message: "What is the employee's name?",
+            validate:  inputUserData = () => {
+                if (inputUserData) {
+                    return true;
+                } else {
+                console.log("You need to enter a valid response.");
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'text',
+            name: 'id',
+            Message: "What is the their employee ID number?",
+            validate:  inputUserData = () => {
+                if (inputUserData) {
+                    return true;
+                } else {
+                console.log("You need to enter a valid response.");
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'text',
+            name: 'email',
+            Message: "What is the their email?",
+            validate:  inputUserData = () => {
+                if (inputUserData) {
+                    return true;
+                } else {
+                console.log("You need to enter a valid response.");
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'text',
+            name: 'school',
+            Message: "What school are they attending?",
+            validate:  inputUserData = () => {
+                if (inputUserData) {
+                    return true;
+                } else {
+                console.log("You need to enter a valid response.");
+                    return false;
+                }
+            }
+        },
+    ])
+}
+
+function getNewEmployee() {
+    return inquirer.prompt([
+        {
+            type: 'checkbox',
+            name: 'role',
+            message: 'Which type of employee would you like to add to your team?',
+            choices: ["Engineer", "Intern", "Finish Building Team"],
+        },
+    ])
+    .then (data =>{
+            if(data.role === "Engineer"){
+            getNewEngineer();
+            } else if(data.role === "Intern"){
+             getNewIntern();
+            } else {
+                return;
+            }
+    })
+}
+
+const getTeamInformation = () => {
 return inquirer.prompt([
         {
         type: 'text',
@@ -95,17 +224,11 @@ return inquirer.prompt([
                 console.log(inputUserData);
                 return generateHTMLPage(inputUserData);
             })
-            .then(getNewEmployee());
-
-            // .then (inputManager =>{
-            //     if ((.employeeType) === "Engineer"){
-            //         getEngineerInformation();
-            //     } else if ((inputUserData.employeeType) === "Intern"){
-            //         getInternInformation();
-            //     } else if ((inputUserData.employeeType) === "finish building team"){
-            //     return generateHTMLPage(inputUserData);
-            //     }
+            // .then(inputUserData => {
+            //     getNewEmployee();
             // })
+                
+        
     }
 
 
@@ -125,13 +248,13 @@ const writeToFile = fileContent => {
     });
 }
 
-getTeamManagerInformation()
-    .then(pageContent =>{
-        return writeToFile(pageContent);    
-    })
-    
+getTeamInformation()
+.then(pageContent =>{
+    return writeToFile(pageContent);
+})
 
-module.exports = getNewEmployee;
+
+
 
 
 // const Team = require('./lib/Team');
@@ -162,3 +285,4 @@ module.exports = getNewEmployee;
 //         });
 //     });
 // }
+

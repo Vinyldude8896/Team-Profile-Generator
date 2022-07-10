@@ -1,5 +1,5 @@
 
-const { string } = require('yargs');
+
 const Employee = require('../lib/Employee');
 
 test ('Creates an employee object', () => {
