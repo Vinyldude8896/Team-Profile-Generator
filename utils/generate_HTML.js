@@ -1,3 +1,5 @@
+const intern = require('../lib/Intern.js')
+
 // function generateEngineer(data) {
 //   return`  <div class = "card-header col-3 mb-2">
 //   <div class="">
@@ -30,6 +32,7 @@
 // `
 // }
 
+const generateIntern = require("./generate_intern");
 
 // function generateIntern(data) {
 //   return`  <div class = "card-header col-3 mb-2">
@@ -130,6 +133,7 @@ function generateHTMLPage (data) {
 
 
 
+
 module.exports = generateHTMLPage;
-// module.exports = generateIntern;
+
 // module.exports = generateEngineer;
