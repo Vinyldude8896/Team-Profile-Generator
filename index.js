@@ -3,6 +3,7 @@ const fs = require('fs');
 const generateHTMLPage = require('./utils/generate_HTML.js');
 const generateIntern = require('./utils/generate_intern.js');
 const generateEngineer = require('./utils/generate_HTML.js');
+const generateFinalHTML = require('./utils/generate_final_HTML.js')
 const Manager = require('./lib/Manager.js');
 const Employee = require('./lib/Employee.js');
 const Intern = require('./lib/Intern.js');
@@ -78,12 +79,14 @@ function getNewEngineer() {
             console.log("The New Engineer's Role is " + inputEngineer.getRole());
             userInputEngineer.push(inputEngineer.name, inputEngineer.id, inputEngineer.email, inputEngineer.github, inputEngineer.role)
             console.log(userInputEngineer);
-            // generateEngineer(inputEngineer);
-            // return writeToFile(inputEngineer);
+            return generateIntern(inputIntern);
         })
-        // .then(inputUserData =>{
-        //     console.log("Generating HTML with" + inputUserData);
-        //     return generateEngineer(inputUserData);
+        .then (employeeData => {
+            return appendToFile(employeeData);
+        })
+        .then(inputUserData => {
+            getNewEmployee();
+        }) generateEngineer(inputUserData);
         // })
         .then(inputUserData => {
             getNewEmployee();
@@ -155,20 +158,11 @@ function getNewIntern() {
         console.log("The New Intern's Role is " + inputIntern.getRole());
         userInputIntern.push(inputIntern.name, inputIntern.id, inputIntern.email, inputIntern.school, inputIntern.role)
         console.log("Generating HTML with this data" + userInputIntern);
-        // return userInputIntern;
-        return userInputIntern;
+         return generateIntern(inputIntern);
     })
-        .then (employeeData =>{
-         return generateIntern(employeeData);
-        // return writeToFile(employeeData);
+    .then (employeeData => {
+        return appendToFile(employeeData);
     })
-    // .then (employeeData => {
-    //     return writeToFile(employeeData);
-    // })
-    // .then(inputUserData =>{
-    //     console.log("Generating HTML with" + inputIntern);
-    //     return writeToFile(inputUserData);
-    // })
     .then(inputUserData => {
         getNewEmployee();
     })
@@ -194,16 +188,12 @@ function getNewEmployee() {
              getNewIntern();
             } else {
                 console.log("does not equal either");
+                generateFinalHTML();
                 return;
+            
             }
     })
-    // .then (employeeData =>{
-    //     console.log ("The employee data is " + employeeData)
-    //     return generateIntern(employeeData);
-    // })
-    // .then (employeeData => {
-    //     return writeToFile(employeeData);
-    // })
+
 }
 
 const getTeamInformation = () => {
@@ -278,17 +268,6 @@ return inquirer.prompt([
                 // generateHTMLPage(inputManager);
                 // return writeToFile(inputManager);
             })
-            // .then(inputUserData =>{
-            //     console.log(inputUserData);
-            //     return generateHTMLPage(inputUserData);
-            // })
-            // .then(inputUserData => {
-            //     getNewEmployee();
-            // })
-            // .then(inputManager =>{
-            //     return userInputManager;
-            // })
-                
         
     }
 
@@ -296,6 +275,23 @@ return inquirer.prompt([
 const writeToFile = fileContent => {
     return new Promise ((resolve, reject) =>  {
         fs.writeFile('./dist/index.html', fileContent, err => {
+            if(err) {
+                reject(err);
+                return;
+            }
+
+            resolve ({
+                ok:true,
+                message: 'Written to file'
+            });
+        });
+    });
+}
+
+
+const appendToFile = fileContent => {
+    return new Promise ((resolve, reject) =>  {
+        fs.appendFile('./dist/index.html', fileContent, err => {
             if(err) {
                 reject(err);
                 return;
@@ -321,42 +317,3 @@ getTeamInformation()
 .then(pageContent =>{
     getNewEmployee();
 })
-
-
-
-
-
-
-
-
-
-
-// const Team = require('./lib/Team');
-// const generateHTMLPage = require('./utils/generate_HTML');
-
-// new Team().getManagerInformation()
-// .then (({inputManager}) =>{
-//     console.log(inputManager);
-//   return generateHTMLPage(inputManager);
-// })
-// .then(pageContent =>{
-//      return writeToFile(pageContent);
-// })
-
-
-// const writeToFile = fileContent => {
-//     return new Promise ((resolve, reject) =>  {
-//         fs.writeFile('./dist/index.html', fileContent, err => {
-//             if(err) {
-//                 reject(err);
-//                 return;
-//             }
-
-//             resolve ({
-//                 ok:true,
-//                 message: 'Written to file'
-//             });
-//         });
-//     });
-// }
-
