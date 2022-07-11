@@ -2,7 +2,7 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 const generateHTMLPage = require('./utils/generate_HTML.js');
 const generateIntern = require('./utils/generate_intern.js');
-const generateEngineer = require('./utils/generate_HTML.js');
+const generateEngineer = require('./utils/generate_engineer.js');
 const generateFinalHTML = require('./utils/generate_final_HTML.js')
 const Manager = require('./lib/Manager.js');
 const Employee = require('./lib/Employee.js');
@@ -14,6 +14,21 @@ const userInputEngineer = [];
 
 // const Manager = require('./lib/Manager');
 
+const appendEndOfHTML = function () {
+    return new Promise ((resolve, reject) =>  {
+        fs.appendFile('./dist/index.html', generateFinalHTML(), err => {
+            if(err) {
+                reject(err);
+                return;
+            }
+
+            resolve ({
+                ok:true,
+                message: 'Written to file'
+            });
+        });
+    });
+}
 
 function getNewEngineer() {
     return inquirer.prompt([
@@ -79,18 +94,14 @@ function getNewEngineer() {
             console.log("The New Engineer's Role is " + inputEngineer.getRole());
             userInputEngineer.push(inputEngineer.name, inputEngineer.id, inputEngineer.email, inputEngineer.github, inputEngineer.role)
             console.log(userInputEngineer);
-            return generateIntern(inputIntern);
+            return generateEngineer(inputEngineer);
         })
-        .then (employeeData => {
+        .then(employeeData => {
             return appendToFile(employeeData);
         })
         .then(inputUserData => {
             getNewEmployee();
-        }) generateEngineer(inputUserData);
-        // })
-        .then(inputUserData => {
-            getNewEmployee();
-        })
+        }) 
 }
 
 
@@ -136,25 +147,25 @@ function getNewIntern() {
             }
         },
         {
-            type: 'input',
-            name: 'school',
-            message: 'What school are they attending?',
-            validate:  inputUserData = () => {
+        type: 'input',
+        name: 'school',
+        message: 'What school are they attending?',
+        validate:  inputUserData = () => {
                 if (inputUserData) {
-                    return true;
+                        return true;
                 } else {
-                console.log("You need to enter a valid response.");
-                    return false;
-                }
-            }
-        },
+                    console.log("You need to enter a valid response.");
+                        return false;
+                        }
+                 }
+         },
     ])
     .then(({name, id, email, school, role}) =>{
         const inputIntern = new Intern(name, id, email, school, role);
         console.log("The New Intern's name is " + inputIntern.getName());
         console.log("The New Intern's employee ID is" + inputIntern.getId());
         console.log("The New Intern's email is " + inputIntern.getEmail());
-        console.log("The New Intern's school is " + inputIntern.school);
+        console.log("The New Intern's school is " + inputIntern.getSchool());
         console.log("The New Intern's Role is " + inputIntern.getRole());
         userInputIntern.push(inputIntern.name, inputIntern.id, inputIntern.email, inputIntern.school, inputIntern.role)
         console.log("Generating HTML with this data" + userInputIntern);
@@ -188,12 +199,10 @@ function getNewEmployee() {
              getNewIntern();
             } else {
                 console.log("does not equal either");
-                generateFinalHTML();
+                appendEndOfHTML();
                 return;
-            
             }
     })
-
 }
 
 const getTeamInformation = () => {
@@ -264,11 +273,11 @@ return inquirer.prompt([
                 console.log("The New Manager's email is " + userInputManager[2]);
                 console.log("The Manager's Office Number is " + userInputManager[3]);
                 console.log("The Manager's Role is " + userInputManager[4]);
-                return inputManager;
-                // generateHTMLPage(inputManager);
-                // return writeToFile(inputManager);
+                return generateHTMLPage(inputManager);
+             })
+            .then (employeeData => {
+            return writeToFile(employeeData);
             })
-        
     }
 
 
@@ -307,13 +316,12 @@ const appendToFile = fileContent => {
 
 getTeamInformation()
 
-.then (inputManager =>{
-    console.log(inputManager);
-  return generateHTMLPage(inputManager);
-})
-.then(pageContent =>{
-    return writeToFile(pageContent);
-})
 .then(pageContent =>{
     getNewEmployee();
 })
+// .then (data =>{
+//     generateFinalHTML(data);
+// })
+// .then (data => {
+//     appendToFile(data);
+// })

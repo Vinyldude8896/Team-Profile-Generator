@@ -24,12 +24,11 @@ function generateHTMLPage (data) {
           </header>
           </div>
       </div>
-        <main>
-          <main class="col-12 d-flex flex-column">
-            <div class="m-1 mr-5 row justify-content-around">
-              <div class = "card-header col-3 mb-2">
-                <div class="">
-                  <h2 class="card-header">
+      <main class="col-12 d-flex flex-column">
+      <div class="m-1 mr-5 d-flex justify-content-around">
+        <div class = "card-header col-3 mb-2">
+          <div class="">
+            <h2 class="card-header">
                     ${data.name}
                     </br>
                     <span class='iconify'>
