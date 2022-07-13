@@ -1,0 +1,49 @@
+/* Style for header bar of my Team */
+
+.linear {
+    background-color: #4B0082;
+    background-image: linear-gradient(45deg, #2ff5f5 0%,  #aff55e 22%, #79e2ba 30%, #43997a 90%);
+    background-size: 1px 100px;
+    background-position: 0 -10px;
+    
+}
+
+h1 {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: bold;
+    color: #4B0082;
+}
+
+
+/* styling for cards and headers */
+h2 {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: bold;
+    font-size: 25px;
+    color: #4B0082;
+}
+
+.sub-header {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: bold;
+    font-size: 22px;
+    color: #4B0082;
+}
+
+.list-header {
+    font-size: 18px;
+    font-weight: bold;
+    color: blue;
+    margin-right: 5px;
+    margin-left: 0px;
+    text-align: left;
+}
+
+.list-group p {
+    font-size: 16px;
+    font-weight: normal;
+    color: blue;
+    text-align: left;
+    word-wrap: normal;
+    padding-left: 5px;
+}
