@@ -41,4 +41,4 @@ Multiple days were spent testing to ensure proper data was being written to the 
 ### 
 link to video on how this app works 
 
-https://drive.google.com/file/d/1bMZhh0aTfnhdLGcics8O4tmRbZSMKxtm/view
+https://drive.google.com/file/d/1sq776JCHLjHUWNABCKT1H7-7PODKvOpn/view
