@@ -228,20 +228,16 @@ function getNewEmployee() {
     // then this data is validated to see what they chose for an answer
     .then (data =>{
         const choice = JSON.stringify(data.role);
-        console.log ("Data retrieved from choices is " + choice);
     // if they chose Engineer we call the getNewEngineer function
             if(choice === '["Engineer"]'){
-                console.log ("Value is engineer");
             getNewEngineer();
     // if they chose Intern we call the getNewIntern function
             } else if(choice === '["Intern"]'){
-                console.log ("value is Intern");
              getNewIntern();
             } else 
     // if they chose "Finish building team" we will call the appendEndOfHTML function
     // which will build us the end of the HTML file
             {
-                console.log("does not equal either");
                 appendEndOfHTML();
                 return;
             }
