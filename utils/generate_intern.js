@@ -1,3 +1,6 @@
+// generates the HTML required for each new Intern, which creates a card with
+// the new Intern's name, role, ID, email and school
+
 function generateIntern(data) {
     console.log("data inside function generateIntern is " + data);
     return`<div class = "card-header col-3 mb-2">

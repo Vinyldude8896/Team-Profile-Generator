@@ -1,19 +1,27 @@
+
+// inporting inquirer and FSS functionality
 const inquirer = require('inquirer');
 const fs = require('fs');
+
+// creating variables for page generating functions located in other files - see path
 const generateHTMLPage = require('./utils/generate_HTML.js');
 const generateIntern = require('./utils/generate_intern.js');
 const generateEngineer = require('./utils/generate_engineer.js');
 const generateFinalHTML = require('./utils/generate_final_HTML.js')
+
+// creating Manager, Intern, Engineer variables for locations of class pages
 const Manager = require('./lib/Manager.js');
-const Employee = require('./lib/Employee.js');
 const Intern = require('./lib/Intern.js');
 const Engineer = require('./lib/Engineer.js');
+
+// creating an initial empty array for Manager, Interns and Engineer's for user input
 const userInputManager = [];
 const userInputIntern = [];
 const userInputEngineer = [];
 
-// const Manager = require('./lib/Manager');
 
+// This function will call to the generate_final_HTML.js and append as the last 
+// portion of HTML to be written to the file
 const appendEndOfHTML = function () {
     return new Promise ((resolve, reject) =>  {
         fs.appendFile('./dist/index.html', generateFinalHTML(), err => {
@@ -30,8 +38,16 @@ const appendEndOfHTML = function () {
     });
 }
 
+// This function is to build a new Engineer by promption for user input
+// the user input prompts include name, ID, email, github
+// then that information is used to create a new Engineer
+// which is then sent to generate_engineer.js to generate the card portion of HTML
+// for the new engineer
+
 function getNewEngineer() {
     return inquirer.prompt([
+
+        // Prompting for new Engeineer's name and validating user has input something
         {
             type: 'input',
             name: 'name',
@@ -45,6 +61,8 @@ function getNewEngineer() {
                 }
             }
         },
+
+        // Prompting for new Engeineer's Id and validating user has input something
         {
             type: 'input',
             name: 'id',
@@ -58,6 +76,8 @@ function getNewEngineer() {
                 }
             }
         },
+
+        // Prompting for new Engeineer's email and validating user has input something
         {
             type: 'input',
             name: 'email',
@@ -71,6 +91,8 @@ function getNewEngineer() {
                 }
             }
         },
+
+        // Prompting for new Engeineer's GitHub username and validating user has input something
         {
             type: 'input',
             name: 'github',
@@ -85,28 +107,33 @@ function getNewEngineer() {
             }
         },
     ])
+    // taking the user input and using that to generate a new Engineer
     .then(({name, id, email, github, role}) =>{
             const inputEngineer = new Engineer(name, id, email, github, role);
-            console.log("The New Engineer's name is " + inputEngineer.getName());
-            console.log("The New Engineer's employee ID is" + inputEngineer.getId());
-            console.log("The New Engineer's email is " + inputEngineer.getEmail());
-            console.log("The New Engineer's GitHub unsername is " + inputEngineer.getGithub());
-            console.log("The New Engineer's Role is " + inputEngineer.getRole());
             userInputEngineer.push(inputEngineer.name, inputEngineer.id, inputEngineer.email, inputEngineer.github, inputEngineer.role)
-            console.log(userInputEngineer);
             return generateEngineer(inputEngineer);
         })
+    // this value is then sent to the apppend to file function
+    // which will generate the HTML required to have teh new Engineer's 
+    // card displayed on our web page
         .then(employeeData => {
             return appendToFile(employeeData);
         })
+    // then we ask if the user want to add a new employee
         .then(inputUserData => {
             getNewEmployee();
         }) 
 }
 
-
+// This function is to build a new Intern by promption for user input
+// the user input prompts include name, ID, email, school
+// then that information is used to create a new Intern
+// which is then sent to generate_intern.js to generate the card portion of HTML
+// for the new intern
 function getNewIntern() {
     return inquirer.prompt([
+
+    // asking the user to input the new Intern's name
         {
             type: 'input',
             name: 'name',
@@ -120,6 +147,7 @@ function getNewIntern() {
                 }
             }
         },
+        // asking the user to input the new Intern's ID
         {
             type: 'input',
             name: 'id',
@@ -133,6 +161,7 @@ function getNewIntern() {
                 }
             }
         },
+        // asking the user to input the new Intern's email
         {
             type: 'input',
             name: 'email',
@@ -146,6 +175,7 @@ function getNewIntern() {
                 }
             }
         },
+        // asking the user to input the new Intern's school
         {
         type: 'input',
         name: 'school',
@@ -160,26 +190,32 @@ function getNewIntern() {
                  }
          },
     ])
+    // taking the user input and using that to generate a new Intern
     .then(({name, id, email, school, role}) =>{
         const inputIntern = new Intern(name, id, email, school, role);
-        console.log("The New Intern's name is " + inputIntern.getName());
-        console.log("The New Intern's employee ID is" + inputIntern.getId());
-        console.log("The New Intern's email is " + inputIntern.getEmail());
-        console.log("The New Intern's school is " + inputIntern.getSchool());
-        console.log("The New Intern's Role is " + inputIntern.getRole());
         userInputIntern.push(inputIntern.name, inputIntern.id, inputIntern.email, inputIntern.school, inputIntern.role)
-        console.log("Generating HTML with this data" + userInputIntern);
          return generateIntern(inputIntern);
     })
+      // this value is then sent to the apppend to file function
+    // which will generate the HTML required to have the new Intern's 
+    // card displayed on our web page
     .then (employeeData => {
         return appendToFile(employeeData);
     })
+    // then we ask if the user want to add a new employee
     .then(inputUserData => {
         getNewEmployee();
     })
 }
 
+
+// This function will happen after the user input's a Team manager
+// then will also be called when they have finished adding an employee
+// function will be called until user chooses "Finish Building Team"
 function getNewEmployee() {
+
+    // this input asks user if they wany to add an Engineer or Intern
+    // or if they want to finish building their  team
     return inquirer.prompt([
         {
             type: 'checkbox',
@@ -188,16 +224,23 @@ function getNewEmployee() {
             choices: ["Engineer", "Intern", "Finish Building Team"],
         },
     ])
+
+    // then this data is validated to see what they chose for an answer
     .then (data =>{
         const choice = JSON.stringify(data.role);
         console.log ("Data retrieved from choices is " + choice);
+    // if they chose Engineer we call the getNewEngineer function
             if(choice === '["Engineer"]'){
                 console.log ("Value is engineer");
             getNewEngineer();
+    // if they chose Intern we call the getNewIntern function
             } else if(choice === '["Intern"]'){
                 console.log ("value is Intern");
              getNewIntern();
-            } else {
+            } else 
+    // if they chose "Finish building team" we will call the appendEndOfHTML function
+    // which will build us the end of the HTML file
+            {
                 console.log("does not equal either");
                 appendEndOfHTML();
                 return;
@@ -205,8 +248,12 @@ function getNewEmployee() {
     })
 }
 
+
+// this is the starting function to getTeam information 
+// this function build's the Team manager and then calls out to getNewEmployee
 const getTeamInformation = () => {
 return inquirer.prompt([
+//asks for the Team Manger's name
         {
         type: 'input',
         name: 'name',
@@ -220,6 +267,7 @@ return inquirer.prompt([
                     }
                 }
                 },
+//asks for the Team Manger's ID
         {
         type: 'input',
         name: 'id',
@@ -233,6 +281,7 @@ return inquirer.prompt([
                         }
                     }
                 },
+//asks for the Team Manger's email
         {
         type: 'input',
         name: 'email',
@@ -246,6 +295,7 @@ return inquirer.prompt([
                         }
                     }
         },
+//asks for the Team Manager's Office number
         {
         type: 'input',
         name: 'officeNumber',
@@ -260,27 +310,23 @@ return inquirer.prompt([
                  }
          },
             ])
+
+        // Then these inputs are used to create the new Manager
             .then(({name, id, email, officeNumber, role}) =>{
                 const inputManager = new Manager(name, id, email, officeNumber, role);
-                console.log("The New manager's name is " + inputManager.getName());
-                console.log("The New Manager's employee ID is" +inputManager.getId());
-                console.log("The New Manager's email is " + inputManager.getEmail());
-                console.log("The Manager's Office Number is " + inputManager.officeNumber);
-                console.log("The Manager's Role is " + inputManager.getRole());
                 userInputManager.push(inputManager.name, inputManager.id, inputManager.email, inputManager.officeNumber, inputManager.role);
-                console.log("The New manager's name is " + userInputManager[0]);
-                console.log("The New Manager's employee ID is" + userInputManager[1]);
-                console.log("The New Manager's email is " + userInputManager[2]);
-                console.log("The Manager's Office Number is " + userInputManager[3]);
-                console.log("The Manager's Role is " + userInputManager[4]);
+        // this information is then sent to generate the initial HTML page
+        // with the team Mangers Card
                 return generateHTMLPage(inputManager);
              })
+        // then we ask to write to file the generated HTML
             .then (employeeData => {
             return writeToFile(employeeData);
             })
     }
 
-
+// this function is used for the initial setup of the HTML page and the 
+// team managers card. It is called after the user inputs the team manager's information
 const writeToFile = fileContent => {
     return new Promise ((resolve, reject) =>  {
         fs.writeFile('./dist/index.html', fileContent, err => {
@@ -297,7 +343,8 @@ const writeToFile = fileContent => {
     });
 }
 
-
+// this function append to the inital generated HTML with team manager's information
+// it appends the HTML that was generated to create new cards for Ineterns or Engineers
 const appendToFile = fileContent => {
     return new Promise ((resolve, reject) =>  {
         fs.appendFile('./dist/index.html', fileContent, err => {
@@ -314,14 +361,13 @@ const appendToFile = fileContent => {
     });
 }
 
+
+// initial call to first function which will ask for the team manager's information
 getTeamInformation()
 
+// then the user will be prompted to add a new employee or finish building team
+// in the getNewEmployee Function
 .then(pageContent =>{
     getNewEmployee();
 })
-// .then (data =>{
-//     generateFinalHTML(data);
-// })
-// .then (data => {
-//     appendToFile(data);
-// })
+

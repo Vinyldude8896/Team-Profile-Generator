@@ -1,3 +1,6 @@
+// This function will generate HTML creating a card with the information of the new
+// engineer using the name, role, ID, email, and github acoount
+
 function generateEngineer(data) {
 
     return`<div class = "card-header col-3 mb-2">

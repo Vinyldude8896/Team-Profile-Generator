@@ -1,4 +1,4 @@
-const generateHTMLPage = require("./generate_HTML")
+// Generates the final HTML to finish off the page
 
 function generateFinalHTML (){
     return `

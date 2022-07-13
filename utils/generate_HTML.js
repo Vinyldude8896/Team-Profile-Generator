@@ -1,4 +1,5 @@
-
+// generates the beginning of the HTML page, as well as the title bar and the first card
+// the first card will include the Team Manager's name, ID, role, email and office number
 
 function generateHTMLPage (data) {
     return `<!DOCTYPE html>

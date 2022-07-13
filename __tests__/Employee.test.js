@@ -1,4 +1,5 @@
 
+// Test for Employee creation
 
 const Employee = require('../lib/Employee');
 
